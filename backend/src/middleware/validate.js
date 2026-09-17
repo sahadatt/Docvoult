@@ -1,0 +1,1 @@
+import { httpError } from '../utils/httpError.js'; export const validate = (schema) => (req, _res, next) => { const parsed = schema.safeParse(req.body); if (!parsed.success) return next(httpError(422, parsed.error.issues[0].message)); req.body = parsed.data; next(); };

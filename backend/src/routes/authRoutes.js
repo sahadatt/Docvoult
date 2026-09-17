@@ -1,0 +1,3 @@
+import { Router } from 'express'; import { z } from 'zod'; import { login, me, register } from '../controllers/authController.js'; import { asyncHandler } from '../utils/asyncHandler.js'; import { validate } from '../middleware/validate.js'; import { requireAuth } from '../middleware/auth.js';
+const router = Router(); const credentials = z.object({ email: z.string().email().max(120), password: z.string().min(10).max(128) });
+router.post('/register', validate(credentials.extend({ name: z.string().trim().min(2).max(80) })), asyncHandler(register)); router.post('/login', validate(credentials), asyncHandler(login)); router.get('/me', requireAuth, asyncHandler(me)); export default router;
